@@ -165,9 +165,17 @@ echo "<a href=\"index.php\">Klicka här för att göra ett nytt test</a>";
       $squareOrCube = $splitStartPrefix[1];
     }
     //echo "<br><br>".mb_strlen($realToPrefix)."<br><br>";
-    $sprefix = array_search($startprefix, array_keys($prefix_sci));
-    $tprefix = array_search($toprefix, array_keys($prefix_sci));
-    $sumprefix = $sprefix - $tprefix;
+    if((int)$prefix_sci[$startprefix] < (int)$prefix_sci[$toprefix])
+    {
+      $operation = "-";
+      $sumprefix = abs(($prefix_sci[$startprefix] - $prefix_sci[$toprefix]));
+    }
+    if((int)$prefix_sci[$startprefix] > (int)$prefix_sci[$toprefix])
+    {
+      $operation = "+";
+      $sumprefix = abs(($prefix_sci[$toprefix] - $prefix_sci[$startprefix]));
+    }
+    $sumprefix = abs(($prefix_sci[$startprefix] - $prefix_sci[$toprefix]));
     //echo $sumprefix . "<br>";
     if($squareOrCube == "²")
     {
@@ -201,13 +209,13 @@ echo "<a href=\"index.php\">Klicka här för att göra ett nytt test</a>";
 
   if($operation == "+")
   {
-    $exponent = $exponent - ($sumprefix * $increaseBy);
+    $exponent = $exponent + ($sumprefix * $increaseBy);
     //$exponent = $exponent.abs($sumprefix);
   }
   else
   {
 
-    $exponent = $exponent + ($sumprefix * $increaseBy);
+    $exponent = $exponent - ($sumprefix * $increaseBy);
     //$exponent = $operation . abs($exponent);
   }
 }
@@ -283,7 +291,11 @@ echo "<table border=\"0\">";
       $s = 1;
       $m = 4;
     }
-
+    if ($rand_type == 2 || $rand_type == 3)
+    {
+        $s = 4;
+        $m = 8;
+    }
     if ($rand_si == 1)
     {
       $s = 1;
@@ -308,7 +320,7 @@ echo "<table border=\"0\">";
     echo "<input type=\"hidden\" name=\"value".($i+1)."\" value=\"".$value1."\">\n";
     echo "<input type=\"hidden\" name=\"startunit".($i+1)."\" value=\"".$unit1."\">\n";
     echo "<tr><td>" . ($i+1) . ".\t </td><td>". $value1 . $unit1 ."</td><td> =</td>
-    <td><input type=\"text\" size=\"10\" name=\"question".($i+1)."\">".$unit2."</td></tr>\n";
+    <td><input type=\"text\" size=\"10\" autocomplete=\"off\" name=\"question".($i+1)."\">".$unit2."</td></tr>\n";
     echo "<input type=\"hidden\" name=\"tounit".($i+1)."\" value=\"".$unit2."\">\n\n";
 
   }
